@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>cn.kotliner.dataclass</id>
+    <name>NewDataClassAction</name>
+    <description><![CDATA[
+<html>Create Data Class on the fly!!<br>
+<a href="https://github.com/enbandari"> openSource</a>
+      </html>
+      ]]>
+    </description>
+    <version>1.0-SNAPSHOT</version>
+    <vendor email="bennyhuo@kotliner.cn">bennyhuo</vendor>
+    <idea-version since-build="107.121"/>
+    <change-notes><![CDATA[
+  <p>
+
+  </p>
+]]></change-notes>
+
+
+    <depends>org.jetbrains.kotlin</depends>
+    <actions>
+        <action id="Kotlin.NewDataClass" class="cn.kotliner.dataclass.action.NewKotlinDataClassAction">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewGroup1"/>
+        </action>
+    </actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <internalFileTemplate name="Kotlin Data Class"/>
+    </extensions>
+</idea-plugin>

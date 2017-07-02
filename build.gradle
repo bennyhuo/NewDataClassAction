@@ -1,0 +1,55 @@
+buildscript {
+    ext.kotlin_version = '1.1.3'
+
+    repositories {
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.1.10"
+}
+
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+group 'cn.kotliner.dataclass'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+intellij {
+    version 'IC-2016.3'
+    plugins = ['Kotlin']
+    pluginName 'NewDataClassAction'
+    updateSinceUntilBuild false
+    alternativeIdePath "/Applications/IntelliJ IDEA.app"
+    publish {
+        pluginId "9812"
+        username publishUsername
+        password publishPassword
+    }
+
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
