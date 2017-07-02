@@ -1,7 +1,7 @@
 # NewDataClassAction
-This is a IntelliJ plugin for Kotlin. You may use this to create a data class from a Json string.
+This is an IntelliJ plugin for Kotlin. You may use this to create a data class from a Json string.
 
-This is mainly inspired by [GsonFormat](https://github.com/zzz40500/GsonFormat), a greate Java Bean code generator from Json.  
+This is mainly inspired by [GsonFormat](https://github.com/zzz40500/GsonFormat), a great Java Bean code generator from Json.  
 
 # Usage
 
