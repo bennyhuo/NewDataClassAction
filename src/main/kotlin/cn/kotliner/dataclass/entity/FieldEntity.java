@@ -52,7 +52,12 @@ public class FieldEntity {
     }
 
     public void setType(String type) {
-        this.type = type;
+        //回头再重新理一下
+        if (type.equals("Integer")) {
+            this.type = "Int";
+        } else {
+            this.type = type;
+        }
     }
 
     public String getRealType() {

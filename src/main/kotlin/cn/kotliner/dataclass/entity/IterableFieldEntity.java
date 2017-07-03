@@ -37,11 +37,7 @@ public class IterableFieldEntity extends FieldEntity {
     private String getClassTypeName() {
         String typeName = "";
         if (targetClass != null) {
-            if (TextUtils.isEmpty(targetClass.getPackName())) {
-                typeName = targetClass.getClassName();
-            } else {
-                typeName = targetClass.getPackName() + "." + targetClass.getClassName();
-            }
+            typeName = targetClass.getClassName();
         } else if (getType() != null && getType().length() > 0) {
             typeName = getType();
         }

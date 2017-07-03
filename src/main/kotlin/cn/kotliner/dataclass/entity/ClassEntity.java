@@ -15,7 +15,6 @@ public class ClassEntity {
     private String fieldTypeSuffix;
     private List<FieldEntity> fields = new ArrayList<>();
     private List<ClassEntity> innerClasss = new ArrayList<>();
-    private String packName;
     private String className;
     /**
      * 存储 comment
@@ -23,14 +22,6 @@ public class ClassEntity {
     private String extra;
     private boolean generate = true;
     private boolean lock = false;
-
-    public String getPackName() {
-        return packName;
-    }
-
-    public void setPackName(String packName) {
-        this.packName = packName;
-    }
 
     public String getClassName() {
         return ktClass == null ? className : ktClass.getName();
@@ -91,8 +82,6 @@ public class ClassEntity {
     public List<? extends FieldEntity> getFields() {
         return fields;
     }
-
-
 
     public String getQualifiedName() {
         return ktClass.getFqName().asString();

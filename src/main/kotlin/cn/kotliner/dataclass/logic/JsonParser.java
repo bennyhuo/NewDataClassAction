@@ -88,7 +88,8 @@ public class JsonParser {
             ktParameterList.addParameter(factory.createParameter("\nvar " + fieldEntity.getFieldName() + ": " + fieldEntity.getBriefType()));
         }
         KtClassBody classBody = KtClassOrObjectKt.getOrCreateBody(parent);
-        classBody.addBefore(innerClass, classBody.getRBrace());
+        //注意这个赋值是必要的，返回的是添加成功的，传入的已经废掉了。
+        innerClass = (KtClass) classBody.addBefore(innerClass, classBody.getRBrace());
 
         for (ClassEntity entity : classEntity.getInnerClasss()) {
             processInnerClassEntities(innerClass, entity);
@@ -233,7 +234,6 @@ public class JsonParser {
         List<String> list = new ArrayList<String>(set);
         List<FieldEntity> fields = createFields(json, list, subClassEntity);
         subClassEntity.addAllFields(fields);
-        subClassEntity.setPackName(parentClass.getQualifiedName());
         subClassEntity.setClassName(className);
         parentClass.addInnerClass(subClassEntity);
         return subClassEntity;
