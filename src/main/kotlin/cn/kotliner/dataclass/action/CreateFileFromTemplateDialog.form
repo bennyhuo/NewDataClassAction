@@ -10,7 +10,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="feac0" class="javax.swing.JLabel" binding="myNameLabel">
+      <component id="feac0" class="javax.swing.JLabel" binding="nameLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -19,7 +19,7 @@
           <text value="&amp;Name:"/>
         </properties>
       </component>
-      <component id="f8fb3" class="javax.swing.JLabel" binding="myKindLabel">
+      <component id="f8fb3" class="javax.swing.JLabel" binding="kindLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -27,7 +27,7 @@
           <text value="&amp;Kind:"/>
         </properties>
       </component>
-      <component id="b76e" class="javax.swing.JTextField" binding="myNameField">
+      <component id="b76e" class="javax.swing.JTextField" binding="nameField">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="250" height="-1"/>
@@ -45,7 +45,7 @@
           <toolTipText value="Pressing Up or Down arrows while in editor changes the kind"/>
         </properties>
       </component>
-      <component id="81412" class="com.intellij.ide.actions.TemplateKindCombo" binding="myKindCombo">
+      <component id="81412" class="com.intellij.ide.actions.TemplateKindCombo" binding="kindCombo">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
