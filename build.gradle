@@ -35,6 +35,7 @@ intellij {
     plugins = ['Kotlin']
     pluginName 'NewDataClassAction'
     updateSinceUntilBuild false
+//    alternativeIdePath "/Applications/Android Studio.app"
     alternativeIdePath "/Applications/IntelliJ IDEA.app"
     publish {
         pluginId "9812"
@@ -58,8 +59,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.json:json:20170516"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
