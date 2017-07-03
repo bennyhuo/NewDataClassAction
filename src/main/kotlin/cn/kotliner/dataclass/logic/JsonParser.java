@@ -130,7 +130,7 @@ public class JsonParser {
 
     private FieldEntity createField(ClassEntity parentClass, String key, Object type) {
         //过滤 不符合规则的key
-        String fieldName = CheckUtil.getInstant().handleArg(key);
+        String fieldName = CheckUtil.INSTANCE.formatIdentifier(key);
         if (Config.getInstant().isUseSerializedName()) {
             fieldName = StringUtils.captureStringLeaveUnderscore(convertSerializedName(fieldName));
         }

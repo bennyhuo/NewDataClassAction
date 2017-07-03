@@ -44,7 +44,7 @@ public class FieldEntity {
     }
 
     public String getGenerateFieldName() {
-        return CheckUtil.getInstant().handleArg(fieldName);
+        return CheckUtil.INSTANCE.formatIdentifier(fieldName);
     }
 
     public String getType() {
@@ -83,22 +83,6 @@ public class FieldEntity {
             return targetClass.getQualifiedName();
         }
         return type;
-    }
-
-    public void checkAndSetType(String text) {
-        if (type != null && CheckUtil.getInstant().checkSimpleType(type.trim())) {
-            //基本类型
-            if (CheckUtil.getInstant().checkSimpleType(text.trim())) {
-                this.type = text.trim();
-            }
-        } else {
-            //实体类:
-            if (targetClass != null && !targetClass.isLock()) {
-                if (!TextUtils.isEmpty(text)) {
-                    targetClass.setClassName(text);
-                }
-            }
-        }
     }
 
     public String getKey() {

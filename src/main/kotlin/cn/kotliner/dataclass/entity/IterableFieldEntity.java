@@ -1,11 +1,7 @@
 package cn.kotliner.dataclass.entity;
 
-import org.apache.http.util.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by dim on 16/11/6.
@@ -77,22 +73,6 @@ public class IterableFieldEntity extends FieldEntity {
             return format;
         }
         return "%s";
-    }
-
-    @Override
-    public void checkAndSetType(String text) {
-        if (targetClass.isLock()) {
-            return;
-        }
-        String regex = getBriefTypeReg().replaceAll("%s", "(\\\\w+)");
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find() && matcher.groupCount() > 0) {
-            String temp = matcher.group(1);
-            if (!TextUtils.isEmpty(temp)) {
-                targetClass.setClassName(temp);
-            }
-        }
     }
 
     @Override
