@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.ajoberstar:grgit:1.1.0'
     }
 }
 
@@ -18,8 +19,14 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
+ext{
+    git = org.ajoberstar.grgit.Grgit.open(file('.'))
+    // Get commit id of HEAD.
+    // revision = git.head().id
+}
+
 group 'cn.kotliner.dataclass'
-version '1.0-SNAPSHOT'
+version "1.0.${git.head().abbreviatedId}-SNAPSHOT"
 
 sourceCompatibility = 1.8
 
@@ -37,6 +44,14 @@ intellij {
 
 }
 
+afterEvaluate {
+    task("releasePlugin", dependsOn: ["buildPlugin"], group: "intellij") << {
+        copy{
+            from fileTree("build/distributions")
+            into "distributions"
+        }
+    }
+}
 
 repositories {
     mavenCentral()

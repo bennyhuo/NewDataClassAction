@@ -7,7 +7,7 @@ This is mainly inspired by [GsonFormat](https://github.com/zzz40500/GsonFormat),
 
 This plugin is still pending approval and not yet ready to download from JetBrains Repo.
  
- Preview distribution is [here](https://github.com/enbandari/NewDataClassAction/blob/master/distributions/NewDataClassAction-1.0-SNAPSHOT.zip), download and install it from local file. Feel free to leave an issue.
+ Preview distribution is [here](https://github.com/enbandari/NewDataClassAction/blob/master/distributions/), download and install it from local file. Feel free to leave an issue.
 
 # Usage
 
