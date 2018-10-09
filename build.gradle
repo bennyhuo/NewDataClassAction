@@ -26,7 +26,7 @@ ext{
     git = Grgit.open(file('.'))
 }
 
-group 'cn.kotliner.dataclass'
+group 'com.bennyhuo.dataclass'
 version "1.0.${git.head().abbreviatedId}-SNAPSHOT"
 
 sourceCompatibility = 1.8
@@ -46,8 +46,8 @@ intellij {
     updateSinceUntilBuild false
 //    alternativeIdePath props["AndroidStudio.path"]
 //    alternativeIdePath props["intellijIU.path"]
-    publish {
-        pluginId "9812"
+    publishPlugin {
+        //pluginId "9812"
         username publishUsername
         password publishPassword
     }

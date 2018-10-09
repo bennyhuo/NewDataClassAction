@@ -1,9 +1,8 @@
 package com.bennyhuo.dataclass.logic;
 
-import com.bennyhuo.dataclass.common.CheckUtil;
+import com.bennyhuo.dataclass.common.Identifiers;
 import com.bennyhuo.dataclass.common.StringUtils;
 import com.bennyhuo.dataclass.common.Utils;
-import com.bennyhuo.dataclass.config.Config;
 import com.bennyhuo.dataclass.entity.ClassEntity;
 import com.bennyhuo.dataclass.entity.FieldEntity;
 import com.bennyhuo.dataclass.entity.IterableFieldEntity;
@@ -101,7 +100,7 @@ public class JsonParser {
 
         List<FieldEntity> fieldEntityList = new ArrayList<FieldEntity>();
         List<String> listEntityList = new ArrayList<String>();
-        boolean writeExtra = Config.getInstant().isGenerateComments();
+        boolean writeExtra = true;
 
         for (int i = 0; i < fieldList.size(); i++) {
             String key = fieldList.get(i);
@@ -130,10 +129,7 @@ public class JsonParser {
 
     private FieldEntity createField(ClassEntity parentClass, String key, Object type) {
         //过滤 不符合规则的key
-        String fieldName = CheckUtil.INSTANCE.formatIdentifier(key);
-        if (Config.getInstant().isUseSerializedName()) {
-            fieldName = StringUtils.captureStringLeaveUnderscore(convertSerializedName(fieldName));
-        }
+        String fieldName = Identifiers.INSTANCE.formatIdentifier(key);
         FieldEntity fieldEntity = typeByValue(parentClass, key, type);
         fieldEntity.setFieldName(fieldName);
         return fieldEntity;
@@ -237,15 +233,6 @@ public class JsonParser {
         subClassEntity.setClassName(className);
         parentClass.addInnerClass(subClassEntity);
         return subClassEntity;
-    }
-
-
-    private String convertSerializedName(String fieldName) {
-        if (Config.getInstant().isUseFieldNamePrefix() &&
-                !TextUtils.isEmpty(Config.getInstant().getFiledNamePreFixStr())) {
-            fieldName = Config.getInstant().getFiledNamePreFixStr() + "_" + fieldName;
-        }
-        return fieldName;
     }
 
     private void parseJson(JSONObject json) {

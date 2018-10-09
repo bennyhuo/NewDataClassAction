@@ -1,6 +1,6 @@
 package com.bennyhuo.dataclass.entity;
 
-import com.bennyhuo.dataclass.common.CheckUtil;
+import com.bennyhuo.dataclass.common.Identifiers;
 import org.apache.http.util.TextUtils;
 import org.json.JSONObject;
 
@@ -44,7 +44,7 @@ public class FieldEntity {
     }
 
     public String getGenerateFieldName() {
-        return CheckUtil.INSTANCE.formatIdentifier(fieldName);
+        return Identifiers.INSTANCE.formatIdentifier(fieldName);
     }
 
     public String getType() {

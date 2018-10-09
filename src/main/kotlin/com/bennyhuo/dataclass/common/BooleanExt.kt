@@ -3,12 +3,12 @@ package com.bennyhuo.dataclass.common
 /**
  * Created by benny on 7/3/17.
  */
-sealed class BooleanExt<out T> constructor(val boolean: Boolean)
+sealed class BooleanExt constructor(val boolean: Boolean)
 
-object Otherwise : BooleanExt<Nothing>(true)
-class WithData<out T>(val data: T) : BooleanExt<T>(false)
+object Otherwise : BooleanExt(true)
+class WithData<out T>(val data: T) : BooleanExt(false)
 
-inline fun <T> Boolean.yes(block: () -> T): BooleanExt<T> = when {
+inline fun <T> Boolean.yes(block: () -> T): BooleanExt = when {
     this -> {
         WithData(block())
     }
@@ -22,10 +22,10 @@ inline fun <T> Boolean.no(block: () -> T) = when {
     }
 }
 
-inline infix fun <T> BooleanExt<T>.otherwise(block: () -> T): T {
+inline infix fun <T> BooleanExt.otherwise(block: () -> T): T {
     return when (this) {
         is Otherwise -> block()
-        is WithData<T> -> this.data
+        is WithData<*> -> this.data as T
     }
 }
 
