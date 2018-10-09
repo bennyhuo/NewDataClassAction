@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.entity;
+package com.bennyhuo.dataclass.entity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.common
+package com.bennyhuo.dataclass.common
 
 /**
  * Created by benny on 7/3/17.

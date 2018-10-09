@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.action
+package com.bennyhuo.dataclass.action
 
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -17,10 +17,10 @@ import org.jetbrains.kotlin.idea.KotlinIcons
  */
 private val log = Logger.getInstance(NewKotlinDataClassAction::class.java)
 
-class NewKotlinDataClassAction: CreateFileFromTemplateAction("Kotlin Data Class",
-        "Creates new Kotlin Data Class",
-        KotlinFileType.INSTANCE.icon),
+class NewKotlinDataClassAction
+    : CreateFileFromTemplateAction("Kotlin Data Class", "Creates new Kotlin Data Class", KotlinFileType.INSTANCE.icon),
         DumbAware{
+
     override fun getActionName(directory: PsiDirectory?, newName: String?, templateName: String?): String {
         return "Kotlin Data Class"
     }

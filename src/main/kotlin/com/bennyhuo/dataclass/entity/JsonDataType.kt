@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.entity
+package com.bennyhuo.dataclass.entity
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -31,7 +31,7 @@ enum class JsonDataType(val value: String) {
 
         @JvmStatic
         fun isSameDataType(text: String, text2: String): Boolean {
-            return isSameDataType(JsonDataType.typeOfString(text), JsonDataType.typeOfString(text2))
+            return isSameDataType(typeOfString(text), typeOfString(text2))
         }
 
         @JvmStatic

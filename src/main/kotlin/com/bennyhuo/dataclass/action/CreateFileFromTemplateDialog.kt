@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package cn.kotliner.dataclass.action
+package com.bennyhuo.dataclass.action
 
-import cn.kotliner.dataclass.common.no
-import cn.kotliner.dataclass.common.yes
-import cn.kotliner.dataclass.logic.JsonParser
-import cn.kotliner.dataclass.ui.toast
+import com.bennyhuo.dataclass.common.no
+import com.bennyhuo.dataclass.common.yes
+import com.bennyhuo.dataclass.logic.JsonParser
+import com.bennyhuo.dataclass.ui.toast
 import com.intellij.ide.actions.ElementCreator
 import com.intellij.ide.actions.TemplateKindCombo
 import com.intellij.lang.LangBundle

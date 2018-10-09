@@ -1,13 +1,13 @@
-package cn.kotliner.dataclass.logic;
+package com.bennyhuo.dataclass.logic;
 
-import cn.kotliner.dataclass.common.CheckUtil;
-import cn.kotliner.dataclass.common.StringUtils;
-import cn.kotliner.dataclass.common.Utils;
-import cn.kotliner.dataclass.config.Config;
-import cn.kotliner.dataclass.entity.ClassEntity;
-import cn.kotliner.dataclass.entity.FieldEntity;
-import cn.kotliner.dataclass.entity.IterableFieldEntity;
-import cn.kotliner.dataclass.entity.JsonDataType;
+import com.bennyhuo.dataclass.common.CheckUtil;
+import com.bennyhuo.dataclass.common.StringUtils;
+import com.bennyhuo.dataclass.common.Utils;
+import com.bennyhuo.dataclass.config.Config;
+import com.bennyhuo.dataclass.entity.ClassEntity;
+import com.bennyhuo.dataclass.entity.FieldEntity;
+import com.bennyhuo.dataclass.entity.IterableFieldEntity;
+import com.bennyhuo.dataclass.entity.JsonDataType;
 import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;

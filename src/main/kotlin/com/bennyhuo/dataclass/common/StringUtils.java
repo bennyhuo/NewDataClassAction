@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.common;
+package com.bennyhuo.dataclass.common;
 
 import org.apache.http.util.TextUtils;
 

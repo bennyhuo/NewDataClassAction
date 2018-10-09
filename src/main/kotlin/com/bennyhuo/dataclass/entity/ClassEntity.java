@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.entity;
+package com.bennyhuo.dataclass.entity;
 
 import org.jetbrains.kotlin.psi.KtClass;
 import org.json.JSONObject;

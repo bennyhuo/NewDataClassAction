@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.config;
+package com.bennyhuo.dataclass.config;
 
 import com.intellij.ide.util.PropertiesComponent;
 

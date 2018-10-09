@@ -19,7 +19,7 @@
 
     <depends>org.jetbrains.kotlin</depends>
     <actions>
-        <action id="Kotlin.NewDataClass" class="cn.kotliner.dataclass.action.NewKotlinDataClassAction">
+        <action id="Kotlin.NewDataClass" class="com.bennyhuo.dataclass.action.NewKotlinDataClassAction">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewGroup1"/>
         </action>
     </actions>

@@ -1,6 +1,6 @@
-package cn.kotliner.dataclass.entity;
+package com.bennyhuo.dataclass.entity;
 
-import cn.kotliner.dataclass.common.CheckUtil;
+import com.bennyhuo.dataclass.common.CheckUtil;
 import org.apache.http.util.TextUtils;
 import org.json.JSONObject;
 

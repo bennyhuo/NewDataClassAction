@@ -1,6 +1,6 @@
-package cn.kotliner.dataclass.common
+package com.bennyhuo.dataclass.common
 
-import cn.kotliner.dataclass.config.Constant
+import com.bennyhuo.dataclass.config.Constant
 import java.util.*
 import java.util.regex.Pattern
 

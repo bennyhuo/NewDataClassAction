@@ -1,4 +1,4 @@
-package cn.kotliner.dataclass.config;
+package com.bennyhuo.dataclass.config;
 
 /**
  * Created by dim on 15/5/31.
