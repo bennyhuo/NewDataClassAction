@@ -16,8 +16,10 @@
 
 package com.bennyhuo.dataclass.action
 
-import com.bennyhuo.dataclass.common.no
+import com.bennyhuo.dataclass.common.format
+import com.bennyhuo.dataclass.common.toDate
 import com.bennyhuo.dataclass.common.yes
+import com.bennyhuo.dataclass.ds.DataSourceType
 import com.bennyhuo.dataclass.logic.JsonParser
 import com.bennyhuo.dataclass.ui.toast
 import com.intellij.ide.actions.ElementCreator
@@ -31,9 +33,10 @@ import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiElement
 import com.intellij.util.PlatformIcons
-import org.jetbrains.kotlin.asJava.classes.KtLightClass
+import com.intellij.util.SystemProperties
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.json.JSONArray
 import org.json.JSONObject
 import java.awt.event.KeyAdapter
@@ -43,22 +46,51 @@ import javax.swing.*
 /**
  * @author peter
  */
-class CreateFileFromTemplateDialog protected constructor(private val project: Project) : DialogWrapper(project, true) {
-    protected lateinit var nameField: JTextField
-    protected lateinit var kindCombo: TemplateKindCombo
+class CreateFileFromTemplateDialog private constructor(private val project: Project) : DialogWrapper(project, true) {
+    private lateinit var nameField: JTextField
+    private lateinit var kindCombo: TemplateKindCombo
     private lateinit var myPanel: JPanel
     private lateinit var myUpDownHint: JLabel
-    protected lateinit var kindLabel: JLabel
-    protected lateinit var nameLabel: JLabel
+    private lateinit var kindLabel: JLabel
+    private lateinit var nameLabel: JLabel
     private lateinit var dataSourceInput: JTextArea
     private lateinit var formatJson: JButton
 
     private var myCreator: ElementCreator? = null
     private var myInputValidator: InputValidator? = null
 
+    private var ktFile: KtFile? = null
+        set(value) {
+            field = value
+            if(value == null) {
+                title = "Create Kotlin Data Class"
+            } else {
+                nameField.text = value.virtualFile.nameWithoutExtension
+                nameField.isEditable = false
+                title = "Update Kotlin Data Class"
+            }
+        }
+
+    private val enteredName: String
+        get() {
+            return nameField.text.let { text ->
+                val trimmed = text.trim { it <= ' ' }
+                if (text.length != trimmed.length) {
+                    nameField.text = trimmed
+                }
+                trimmed
+            }
+        }
+
     init {
         kindLabel.labelFor = kindCombo
         kindCombo.registerUpDownHint(nameField)
+
+        DataSourceType.values().forEach {
+            //template name - see resources fileTemplates.internal
+            kindCombo.addItem(it.presentableName, it.icon, it.templateName)
+        }
+
         myUpDownHint.icon = PlatformIcons.UP_DOWN_ARROWS
         setTemplateKindComponentsVisible(false)
 
@@ -101,57 +133,36 @@ class CreateFileFromTemplateDialog protected constructor(private val project: Pr
     }
 
     override fun doValidate(): ValidationInfo? {
-        myInputValidator?.let {
-            val text = nameField.text.trim { it <= ' ' }
-            it.canClose(text).no {
-                val errorText = (it as? InputValidatorEx)?.getErrorText(text) ?: LangBundle.message("incorrect.name")
-                return ValidationInfo(errorText, nameField)
+        myInputValidator?.let { validator ->
+            enteredName.let { text ->
+                if (!validator.canClose(text)) {
+                    val errorText = (validator as? InputValidatorEx)?.getErrorText(text)
+                            ?: LangBundle.message("incorrect.name")
+                    return ValidationInfo(errorText, nameField)
+                }
             }
         }
         return super.doValidate()
     }
 
-    private val enteredName: String
-        get() {
-            return nameField.text.trim { it <= ' ' }.apply { nameField.text = this }
-        }
-
-    override fun createCenterPanel(): JComponent? {
-        return myPanel
-    }
+    override fun createCenterPanel() = myPanel
 
     override fun doOKAction() {
         //必须输入正确的 json 字符串才行
         if (!formatJson()) {
             return
         }
-        myCreator?.let {
-            it.tryCreate(enteredName).size > 0
-        }?.yes {
+        myCreator?.tryCreate(enteredName)?.isNotEmpty()?.yes {
             super.doOKAction()
         }
     }
 
-    override fun getPreferredFocusedComponent(): JComponent? {
-        return nameField
-    }
+    override fun getPreferredFocusedComponent() = nameField
 
     fun setTemplateKindComponentsVisible(flag: Boolean) {
         kindCombo.isVisible = flag
         kindLabel.isVisible = flag
         myUpDownHint.isVisible = flag
-    }
-
-    interface Builder {
-        fun setTitle(title: String): Builder
-
-        fun setValidator(validator: InputValidator): Builder
-
-        fun addKind(kind: String, icon: Icon?, templateName: String): Builder
-
-        fun <T : PsiElement> show(errorTitle: String, selectedItem: String?, creator: FileCreator<T>): T?
-
-        val customProperties: Map<String, String>?
     }
 
     interface FileCreator<T> {
@@ -161,14 +172,20 @@ class CreateFileFromTemplateDialog protected constructor(private val project: Pr
         fun getActionName(name: String, templateName: String): String
     }
 
-    private class BuilderImpl(private val myDialog: CreateFileFromTemplateDialog, private val myProject: Project) : Builder {
+    class Builder(private val myDialog: CreateFileFromTemplateDialog, private val myProject: Project) {
 
-        override fun setTitle(title: String): Builder {
+        fun ktFile(ktFile: KtFile?): Builder{
+            myDialog.ktFile = ktFile
+            return this
+        }
+
+
+        fun title(title: String): Builder {
             myDialog.title = title
             return this
         }
 
-        override fun addKind(name: String, icon: Icon?, templateName: String): Builder {
+        fun addKind(name: String, icon: Icon?, templateName: String): Builder {
             myDialog.kindCombo.addItem(name, icon, templateName)
             if (myDialog.kindCombo.comboBox.itemCount > 1) {
                 myDialog.setTemplateKindComponentsVisible(true)
@@ -176,26 +193,46 @@ class CreateFileFromTemplateDialog protected constructor(private val project: Pr
             return this
         }
 
-        override fun setValidator(validator: InputValidator): Builder {
+        fun setValidator(validator: InputValidator): Builder {
             myDialog.myInputValidator = validator
             return this
         }
 
-        override fun <T : PsiElement> show(errorTitle: String, selectedTemplateName: String?,
-                                           creator: FileCreator<T>): T? {
+        fun <T : PsiElement> show(errorTitle: String, selectedItem: String?, creator: FileCreator<T>): T? {
             val created = Ref.create<T>(null)
-            myDialog.kindCombo.setSelectedName(selectedTemplateName)
+            myDialog.kindCombo.setSelectedName(selectedItem)
             myDialog.myCreator = object : ElementCreator(myProject, errorTitle) {
 
-                @Throws(Exception::class)
-                override fun create(newName: String): Array<PsiElement> {
-                    val element = creator.createFile(myDialog.enteredName, myDialog.kindCombo.getSelectedName())
-                    val json = myDialog.dataSourceInput.text
-                    val ktFile = element as KtFile?
-                    val ktClass = (ktFile!!.classes[0] as KtLightClass).kotlinOrigin as KtClass?
-                    JsonParser(json, ktClass).parse()
-                    created.set(element)
-                    if (element != null) {
+                override fun create(fileName: String): Array<PsiElement> {
+                    (myDialog.ktFile?:creator.createFile(myDialog.enteredName, myDialog.kindCombo.selectedName))?.let { element ->
+                        val ktFile = element as KtFile
+                        val json = myDialog.dataSourceInput.text
+
+                        val ktClass = ktFile.children.firstOrNull { it is KtClass && it.name == fileName }?.let { existsKtClass ->
+                            println("Delete original element: $existsKtClass")
+
+                            val detachedKtClass = KtPsiFactory(myProject).createClass("""
+                                /**
+                                 * Updated by ${SystemProperties.getUserName()} on ${System.currentTimeMillis().toDate().format("yyyy-MM-dd")}
+                                 */
+                                data class $fileName()
+                            """.trimIndent())
+
+                            (ktFile.addBefore(detachedKtClass, existsKtClass) as KtClass).also {
+                                existsKtClass.delete()
+                            }
+                        } ?: run {
+                            val detachedKtClass = KtPsiFactory(myProject).createClass("""
+                                /**
+                                 * Created by ${SystemProperties.getUserName()} on ${System.currentTimeMillis().toDate().format("yyyy-MM-dd")}
+                                 */
+                                data class $fileName()
+                            """.trimIndent())
+                            ktFile.add(detachedKtClass) as KtClass
+                        }
+
+                        JsonParser(json, ktClass).parse()
+                        created.set(element as T)
                         return arrayOf(element)
                     }
                     return PsiElement.EMPTY_ARRAY
@@ -213,13 +250,13 @@ class CreateFileFromTemplateDialog protected constructor(private val project: Pr
             return null
         }
 
-        override val customProperties: Map<String, String>? = null
+        val customProperties: Map<String, String>? = null
     }
 
     companion object {
         fun createDialog(project: Project): Builder {
             val dialog = CreateFileFromTemplateDialog(project)
-            return BuilderImpl(dialog, project)
+            return Builder(dialog, project)
         }
     }
 }

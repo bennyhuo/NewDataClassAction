@@ -8,6 +8,7 @@ import com.bennyhuo.dataclass.entity.FieldEntity;
 import com.bennyhuo.dataclass.entity.IterableFieldEntity;
 import com.bennyhuo.dataclass.entity.JsonDataType;
 import com.google.gson.JsonSyntaxException;
+import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.codeStyle.CodeStyleManager;
@@ -65,13 +66,12 @@ public class JsonParser {
                         processInnerClassEntities(ktClass, entity);
                     }
 
-                    CodeStyleSettings settings = CodeStyleSettingsManager.getSettings(project);
-                    CommonCodeStyleSettings jetCommonSettings = settings.getCommonSettings(KotlinLanguage.INSTANCE);
-                    int wrapStrategy = jetCommonSettings.METHOD_PARAMETERS_WRAP;
-                    jetCommonSettings.METHOD_PARAMETERS_WRAP = CommonCodeStyleSettings.WRAP_ALWAYS;
+                    CommonCodeStyleSettings commonCodeStyleSettings = CodeStyle.getLanguageSettings(ktClass.getContainingFile(), KotlinLanguage.INSTANCE);
+                    int wrapStrategy = commonCodeStyleSettings.METHOD_PARAMETERS_WRAP;
+                    commonCodeStyleSettings.METHOD_PARAMETERS_WRAP = CommonCodeStyleSettings.WRAP_ALWAYS;
                     CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(project);
                     codeStyleManager.reformat(file);
-                    jetCommonSettings.METHOD_PARAMETERS_WRAP = wrapStrategy;
+                    commonCodeStyleSettings.METHOD_PARAMETERS_WRAP = wrapStrategy;
                 }
             });
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class JsonParser {
             ktParameterList.addParameter(factory.createParameter("\nvar " + fieldEntity.getFieldName() + ": " + fieldEntity.getBriefType()));
         }
         KtClassBody classBody = KtClassOrObjectKt.getOrCreateBody(parent);
-        //注意这个赋值是必要的，返回的是添加成功的，传入的已经废掉了。
+        //注意这个赋值是必要的，返回的是添加成功的，是参数的副本。
         innerClass = (KtClass) classBody.addBefore(innerClass, classBody.getRBrace());
 
         for (ClassEntity entity : classEntity.getInnerClasss()) {

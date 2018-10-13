@@ -48,6 +48,6 @@ object Identifiers {
      * @return word If valid identifier otherwise `$word`
      */
     fun formatIdentifier(word: String) = word.let(Identifiers::isValidIdentifier)
-            .yes { "`$word`" }
+            .no { "`$word`" }
             .otherwise { word }
 }
