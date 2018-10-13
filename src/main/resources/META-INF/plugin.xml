@@ -12,7 +12,8 @@
     <idea-version since-build="107.121"/>
     <change-notes><![CDATA[
   <p>
-
+    1. Support to update a data class.
+    2. Add new icons.
   </p>
 ]]></change-notes>
 

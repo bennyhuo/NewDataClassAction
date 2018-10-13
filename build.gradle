@@ -27,7 +27,7 @@ ext{
 }
 
 group 'com.bennyhuo.dataclass'
-version "1.0.${git.head().abbreviatedId}-SNAPSHOT"
+version "1.0.${git.head().abbreviatedId}-rc"
 
 sourceCompatibility = 1.8
 
@@ -46,12 +46,13 @@ intellij {
     updateSinceUntilBuild false
 //    alternativeIdePath props["AndroidStudio.path"]
 //    alternativeIdePath props["intellijIU.path"]
-    publishPlugin {
-        //pluginId "9812"
-        username publishUsername
-        password publishPassword
-    }
 
+
+}
+
+publishPlugin {
+    username publishUsername
+    password publishPassword
 }
 
 afterEvaluate {
