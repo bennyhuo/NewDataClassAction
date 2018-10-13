@@ -1,5 +1,6 @@
 package com.bennyhuo.dataclass.action
 
+import com.bennyhuo.dataclass.common.Icons
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -15,8 +16,8 @@ import org.jetbrains.kotlin.psi.KtFile
 /**
  * Created by benny on 6/30/17.
  */
-class NewKotlinDataClassAction
-    : CreateFileFromTemplateAction("Kotlin Data Class", "Creates new Kotlin Data Class", KotlinFileType.INSTANCE.icon),
+class NewDataClassAction
+    : CreateFileFromTemplateAction("New Data Class", "Creates new Kotlin Data Class", Icons.DATA_CLASS_ICON),
         DumbAware {
 
     private var ktFile: KtFile? = null
@@ -29,11 +30,7 @@ class NewKotlinDataClassAction
 
     override fun isAvailable(dataContext: DataContext): Boolean {
         if (super.isAvailable(dataContext)) {
-            val psiFile = CommonDataKeys.PSI_FILE.getData(dataContext)
-            if (psiFile?.language == KotlinLanguage.INSTANCE) {
-                ktFile = psiFile as KtFile
-                return true
-            } else if(psiFile == null){
+            if(CommonDataKeys.PSI_FILE.getData(dataContext) == null){
                 val ideView = LangDataKeys.IDE_VIEW.getData(dataContext)!!
                 val project = PlatformDataKeys.PROJECT.getData(dataContext)!!
                 val projectFileIndex = ProjectRootManager.getInstance(project).fileIndex
@@ -46,5 +43,5 @@ class NewKotlinDataClassAction
 
     override fun hashCode() = 0
 
-    override fun equals(other: Any?) = other is NewKotlinDataClassAction
+    override fun equals(other: Any?) = other is NewDataClassAction
 }
